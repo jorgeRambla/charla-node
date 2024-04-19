@@ -1,7 +1,7 @@
 const express = require('express');
 const logger = require('morgan');
 const indexRouter = require('./routes');
-const usersRouter = require('./routes/users');
+const disneyRouter = require('./routes/disney');
 const auth = require('./middlewares/authMiddleware');
 
 function createServer() {
@@ -11,7 +11,7 @@ function createServer() {
   app.use(express.json());
 
   app.use('/', indexRouter);
-  app.use('/users', auth, usersRouter);
+  app.use('/disney', auth, disneyRouter);
 
   app.use((req, res, next) => {
     res.status(404).send('Not Found');
