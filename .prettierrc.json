@@ -1,0 +1,9 @@
+{
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "trailingComma": "none",
+  "semi": true,
+  "bracketSpacing": true,
+  "multilineArrayWrapThreshold": 3,
+  "plugins": ["./node_modules/prettier-plugin-multiline-arrays"]
+}
