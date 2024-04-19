@@ -1,9 +1,7 @@
 const express = require('express');
 const { StatusCodes } = require('http-status-codes');
-const dataSource = require('../dataSource');
+const userService = require('../services/userService');
 const router = express.Router();
-
-const repository = dataSource.getRepository('user');
 
 router.post('/', async (req, res) => {
   const body = req.body;
@@ -14,11 +12,24 @@ router.post('/', async (req, res) => {
 
   const user = {
     name: body.name,
-    email: body.email
+    email: body.email,
+    favoriteCharacterId: body.favoriteCharacter || null
   };
 
-  const savedUser = await repository.save(user);
+  const savedUser = await userService.save(user);
   res.send(savedUser);
 });
+
+router.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  const user = await userService.getUserById(id);
+  if (!user) {
+    res.status(StatusCodes.NOT_FOUND).send('User not found');
+    return;
+  }
+  res.send(user);
+});
+
+// HERE WE NEED THE PUT METHOD
 
 module.exports = router;

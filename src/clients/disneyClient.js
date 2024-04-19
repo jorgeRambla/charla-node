@@ -1,4 +1,7 @@
 async function getCharacterById(id) {
+  if (!id) {
+    return null;
+  }
   const rawResponse = await fetch(`https://api.disneyapi.dev/characters/${id}`).then((res) => res.text());
   const { data } = formatDisneyResponse(rawResponse);
   if (Array.isArray(data)) {
