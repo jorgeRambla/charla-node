@@ -1,18 +1,20 @@
 const express = require('express');
+const disneyClient = require('../clients/disneyClient');
+const { StatusCodes } = require('http-status-codes');
 const router = express.Router();
 
 router.get('/characters/:id', async (req, res, next) => {
-  const rawResponse = await fetch(`https://api.disneyapi.dev/characters/${req.params.id}`).then((res) => res.text());
-  const replacedResponse = rawResponse.replace(/http(s)?:\/\/api.disneyapi.dev\/character(s)?/g, '/disney/characters');
-
-  res.send(JSON.parse(replacedResponse));
+  const character = await disneyClient.getCharacterById(req.params.id);
+  if (character == null) {
+    res.status(StatusCodes.NOT_FOUND).send('Character not found');
+    return;
+  }
+  res.send(character);
 });
 
 router.get('/characters', async (req, res, next) => {
-  const rawResponse = await fetch('https://api.disneyapi.dev/characters').then((res) => res.text());
-
-  const replacedResponse = rawResponse.replace(/http(s)?:\/\/api.disneyapi.dev\/character(s)?/g, '/disney/characters');
-  res.send(JSON.parse(replacedResponse));
+  const allCharacters = await disneyClient.getCharacters();
+  res.send(allCharacters);
 });
 
 module.exports = router;
